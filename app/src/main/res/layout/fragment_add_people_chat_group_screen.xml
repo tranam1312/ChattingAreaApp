@@ -42,10 +42,58 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_til_email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:hint="Tên Nhóm "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chat_detail_header_wrapper"
+        app:startIconDrawable="@drawable/ic_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_edt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="Tên nhóm" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_add_rcv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_til_email"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_user" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/user_rvc"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+<<<<<<< HEAD
+        android:layout_marginTop="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/user_add_rcv"
+        app:layout_constraintVertical_bias="1.0"
+        tools:listitem="@layout/item_user" />
+
+=======
         android:background="@color/primary_orange_light"
         android:clipChildren="false"
         android:clipToPadding="false"
@@ -57,5 +105,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chat_detail_header_wrapper"
         tools:listitem="@layout/item_chat_overview" />
+>>>>>>> c10f6f8f26fbce2a14443cfb65e60eca2959eb87
 
 </androidx.constraintlayout.widget.ConstraintLayout>

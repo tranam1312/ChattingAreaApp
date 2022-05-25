@@ -52,7 +52,6 @@ public class ChatOverviewScreen extends Fragment implements ChatOverviewAdapter.
     private ArrayList<UserDto> listUserDto = new ArrayList();
     private ArrayList<UserChatOverview> listData = new ArrayList();
     private UserDto currentUserDto = new UserDto();
-
     private ChatOverviewAdapter chatOverviewAdapter;
 
     public ChatOverviewScreen() {
