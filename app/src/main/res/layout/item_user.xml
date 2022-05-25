@@ -1,6 +1,5 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_chat_overview_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,7 +8,7 @@
     android:paddingVertical="12dp">
 
     <com.github.siyamed.shapeimageview.CircularImageView
-        android:id="@+id/item_chat_overview_iv_ava"
+        android:id="@+id/avatar_img"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/img"
@@ -19,7 +18,7 @@
         app:siBorderWidth="1dp" />
 
     <TextView
-        android:id="@+id/item_chat_overview_tv_name"
+        android:id="@+id/nam_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -28,11 +27,18 @@
         android:textColor="@color/black"
         android:textSize="16dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/item_chat_overview_iv_ava"
-        app:layout_constraintStart_toEndOf="@+id/item_chat_overview_iv_ava"
-        app:layout_constraintTop_toTopOf="@+id/item_chat_overview_iv_ava" />
-<ImageView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:src="@drawable/ic_plus"/>
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_img"
+        app:layout_constraintStart_toEndOf="@+id/avatar_img"
+        app:layout_constraintTop_toTopOf="@+id/avatar_img" />
+
+    <ImageView
+        android:id="@+id/add_user_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_plus_primary_orange"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/nam_tv"
+        app:layout_constraintTop_toTopOf="@+id/avatar_img" />
 </androidx.constraintlayout.widget.ConstraintLayout>
