@@ -3,6 +3,7 @@ package com.example.chattingarea.ui;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +51,7 @@ public class ChatDetailScreen extends Fragment {
     private RecyclerView mRcv;
     private EditText mEdtChat;
     private ImageView mBtnSend;
+    private AppCompatImageView back;
 
     FriendChatAdapter friendChatAdapter;
 
@@ -96,6 +98,7 @@ public class ChatDetailScreen extends Fragment {
         mRcv = mRootView.findViewById(R.id.chat_detail_rcv);
         mEdtChat = mRootView.findViewById(R.id.chat_detail_edt_chat_box);
         mBtnSend = mRootView.findViewById(R.id.chat_detail_btn_send);
+        back = mRootView.findViewById(R.id.back);
 
         friendChatAdapter = new FriendChatAdapter(getContext(), listData, currentUser);
         mRcv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -103,6 +106,8 @@ public class ChatDetailScreen extends Fragment {
     }
 
     private void initAction() {
+        back.setOnClickListener(view -> requireActivity().onBackPressed());
+        
         mBtnSend.setOnClickListener(view -> {
             String mess = mEdtChat.getText().toString();
             if (TextUtils.isEmpty(mess)) {
