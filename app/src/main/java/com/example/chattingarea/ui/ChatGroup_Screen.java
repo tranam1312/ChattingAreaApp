@@ -57,7 +57,14 @@ public class ChatGroup_Screen extends Fragment {
     private void initAction() {
         back.setOnClickListener(view -> requireActivity().onBackPressed());
 
-//        floatingActionButton.setOnClickListener(view-> );
+        floatingActionButton.setOnClickListener(view -> {
+            createGroup();
+        });
+    }
+
+    private void createGroup() {
+
+
     }
 
     private void initData() {

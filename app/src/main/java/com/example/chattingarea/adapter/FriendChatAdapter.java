@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,7 +58,7 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (holder instanceof ItemMessageLeftHolder) {
             ((ItemMessageLeftHolder) holder).bind(listData.get(position), position, context);
         } else if (holder instanceof ItemMessageRightHolder) {
-            ((ItemMessageRightHolder) holder).bind(listData.get(position), position);
+            ((ItemMessageRightHolder) holder).bind(listData.get(position), position, context);
         }
     }
 
@@ -77,6 +78,7 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         TextView tvName;
         TextView tvMess;
         TextView tvTimestamp;
+        ImageView ivPick;
 
         public ItemMessageLeftHolder(View itemView) {
             super(itemView);
@@ -84,6 +86,7 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             tvName = itemView.findViewById(R.id.item_left_name);
             tvMess = itemView.findViewById(R.id.item_left_tv_message);
             tvTimestamp = itemView.findViewById(R.id.item_left_tv_timestamp);
+            ivPick = itemView.findViewById(R.id.item_left_iv_message);
         }
 
         public void bind(MessageDetailDto messageDetailDto, int position, Context context) {
@@ -95,7 +98,20 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     .centerCrop()
                     .into(ciAva);
             tvName.setText(messageDetailDto.getuName());
-            tvMess.setText(messageDetailDto.getContent());
+            if (messageDetailDto.isStringType()) {
+                tvMess.setVisibility(View.VISIBLE);
+                ivPick.setVisibility(View.GONE);
+                tvMess.setText(messageDetailDto.getContent());
+            } else {
+                tvMess.setVisibility(View.GONE);
+                ivPick.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load(messageDetailDto.getContent()) // image url
+                        .placeholder(R.drawable.img) // any placeholder to load at start
+                        .error(R.drawable.img)  // any image in case of error
+                        .centerCrop()
+                        .into(ivPick);
+            }
 
             SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("hh:mm:ss a");
             String dateStr = DATE_FORMAT.format(messageDetailDto.getTimestamp());
@@ -106,15 +122,32 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     static class ItemMessageRightHolder extends RecyclerView.ViewHolder {
         TextView tvMess;
         TextView tvTimestamp;
+        ImageView ivPick;
 
         public ItemMessageRightHolder(View itemView) {
             super(itemView);
             tvMess = itemView.findViewById(R.id.item_right_tv_message);
             tvTimestamp = itemView.findViewById(R.id.item_right_tv_timestamp);
+            ivPick = itemView.findViewById(R.id.item_right_iv_message);
         }
 
-        public void bind(MessageDetailDto messageDetailDto, int position) {
-            tvMess.setText(messageDetailDto.getContent());
+        public void bind(MessageDetailDto messageDetailDto, int position, Context context) {
+            if (messageDetailDto.isStringType()) {
+                tvMess.setVisibility(View.VISIBLE);
+                ivPick.setVisibility(View.GONE);
+                tvMess.setText(messageDetailDto.getContent());
+            } else {
+                tvMess.setVisibility(View.GONE);
+                ivPick.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load(messageDetailDto.getContent()) // image url
+                        .placeholder(R.drawable.img) // any placeholder to load at start
+                        .error(R.drawable.img)  // any image in case of error
+                        .centerCrop()
+                        .into(ivPick);
+            }
+
+
             SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("hh:mm:ss a");
             String dateStr = DATE_FORMAT.format(messageDetailDto.getTimestamp());
             tvTimestamp.setText(dateStr);
