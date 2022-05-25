@@ -5,6 +5,19 @@
       <map>
         <entry key="..\:/Github/Chat-master/Chat-master/app/src/main/res/layout/item_chat_left.xml" value="0.3546875" />
         <entry key="..\:/Github/Chat-master/Chat-master/app/src/main/res/layout/item_chat_right.xml" value="0.3546875" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/drawable/home_btn_border.xml" value="0.2135" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/drawable/ic_plus_1.xml" value="0.1085" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/layout/fragment_add_people_chat_group_screen.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/layout/fragment_chat_detail_screen.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/layout/fragment_chat_group_screen.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/layout/fragment_chat_gruop.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/layout/fragment_chat_overview_screen.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/layout/fragment_home_screen.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/layout/fragment_profile.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/layout/item_chat_left.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/layout/item_chat_overview.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/layout/item_chat_right.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/anhna/Documents/ChattingAreaApp/app/src/main/res/layout/item_user.xml" value="0.2453125" />
         <entry key="app/src/main/res/layout/fragment_chat_detail_screen.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_chat_overview_screen.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_chat_left.xml" value="0.20625" />
