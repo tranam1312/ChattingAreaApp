@@ -64,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
         mUserRef.child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null) return;
+                if (dataSnapshot.getValue() == null) {
+                    openProfileScreen();
+                    return;
+                }
                 UserDto userDto = dataSnapshot.getValue(UserDto.class);
                 if (TextUtils.isEmpty(userDto.getName())) {
                     openProfileScreen();

@@ -45,10 +45,6 @@ public class LoginScreen extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            openMainActivity();
-        }
     }
 
     @Override
@@ -65,6 +61,10 @@ public class LoginScreen extends AppCompatActivity {
         mTvSignUp = findViewById(R.id.login_tv_right);
         edtEmail = findViewById(R.id.login_edt_email);
         edtPassword = findViewById(R.id.login_edt_password);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            openMainActivity();
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

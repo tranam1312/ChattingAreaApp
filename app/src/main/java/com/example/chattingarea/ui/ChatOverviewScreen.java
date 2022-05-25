@@ -176,7 +176,7 @@ public class ChatOverviewScreen extends Fragment implements ChatOverviewAdapter.
         userDto.setPhoneNumber((String) value.get("phoneNumber"));
         userDto.setAge((String) value.get("age"));
         userDto.setId((String) value.get("id"));
-        userDto.setGender((boolean) value.get("gender"));
+        userDto.setGender(false);
         userDto.setUrlAva((String) value.get("urlAva"));
         return userDto;
     }

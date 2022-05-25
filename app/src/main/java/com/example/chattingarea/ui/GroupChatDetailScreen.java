@@ -7,13 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,6 +16,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chattingarea.Constant;
 import com.example.chattingarea.R;
@@ -46,15 +45,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ChatDetailScreen extends Fragment {
+public class GroupChatDetailScreen extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final int OPEN_DOCUMENT_CODE = 22;
     private String uIdOther;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mUserRef;
-    private DatabaseReference mRoomRef;
+    private DatabaseReference mGroupRef;
+    private DatabaseReference mGroupChatRef;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -70,11 +72,11 @@ public class ChatDetailScreen extends Fragment {
     private FriendChatAdapter friendChatAdapter;
     private UserDto currentUser;
 
-    public ChatDetailScreen() {
+    public GroupChatDetailScreen() {
     }
 
-    public static ChatDetailScreen newInstance(String param1) {
-        ChatDetailScreen fragment = new ChatDetailScreen();
+    public static GroupChatDetailScreen newInstance(String param1) {
+        GroupChatDetailScreen fragment = new GroupChatDetailScreen();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         fragment.setArguments(args);
@@ -101,7 +103,8 @@ public class ChatDetailScreen extends Fragment {
 
     private void initView() {
         mDatabase = FirebaseDatabase.getInstance();
-        mRoomRef = mDatabase.getReference(Constant.ROOM_REF);
+        mGroupRef = mDatabase.getReference(Constant.GROUP_REF);
+        mGroupChatRef = mDatabase.getReference(Constant.GROUP_Chat_REF);
         mUserRef = mDatabase.getReference(Constant.USER_REF);
         mFirebaseAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -180,8 +183,7 @@ public class ChatDetailScreen extends Fragment {
                 key, mess, new Date(), true, currentUser.getId(), currentUser.getName(), currentUser.getUrlAva()
         );
 
-        mRoomRef.child(currentUser.getId()).child(uIdOther).child(Utils.generateString()).setValue(messDto);
-        mRoomRef.child(uIdOther).child(currentUser.getId()).child(Utils.generateString()).setValue(messDto);
+        mGroupChatRef.child(uIdOther).child(Utils.generateString()).setValue(messDto);
     }
 
     private void addChatImg(String urlAva) {
@@ -189,9 +191,7 @@ public class ChatDetailScreen extends Fragment {
         MessageDetailDto messDto = new MessageDetailDto(
                 key, urlAva, new Date(), false, currentUser.getId(), currentUser.getName(), currentUser.getUrlAva()
         );
-
-        mRoomRef.child(currentUser.getId()).child(uIdOther).child(Utils.generateString()).setValue(messDto);
-        mRoomRef.child(uIdOther).child(currentUser.getId()).child(Utils.generateString()).setValue(messDto);
+        mGroupChatRef.child(uIdOther).child(Utils.generateString()).setValue(messDto);
     }
 
     private void initData() {
@@ -201,7 +201,7 @@ public class ChatDetailScreen extends Fragment {
     }
 
     private void getHistoryMess() {
-        mRoomRef.child(mFirebaseAuth.getUid()).child(uIdOther).addValueEventListener(new ValueEventListener() {
+        mGroupChatRef.child(uIdOther).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d("getHistoryMess", "ok: " + snapshot);
@@ -242,11 +242,12 @@ public class ChatDetailScreen extends Fragment {
     }
 
     private void setNameOtherUser() {
-        mUserRef.child(uIdOther).addValueEventListener(new ValueEventListener() {
+        mGroupRef.child(mFirebaseAuth.getUid()).child(uIdOther).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserDto value = dataSnapshot.getValue(UserDto.class);
-                tvHeaderName.setText(value.getName());
+                if (dataSnapshot.getValue() == null) return;
+                GroupDto value = dataSnapshot.getValue(GroupDto.class);
+                tvHeaderName.setText(value.getgName());
             }
 
             @Override

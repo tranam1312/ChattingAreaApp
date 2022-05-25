@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,18 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.chattingarea.R;
+import com.example.chattingarea.model.GroupDto;
 import com.example.chattingarea.model.UserChatOverview;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
 import java.util.ArrayList;
 
-public class ChatOverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class GroupChatOverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private ArrayList<UserChatOverview> listData;
+    private ArrayList<GroupDto> listData;
     private ClickListener mClickListener;
 
-    public ChatOverviewAdapter(Context context, ArrayList<UserChatOverview> listData, ClickListener clickListener) {
+    public GroupChatOverviewAdapter(Context context, ArrayList<GroupDto> listData, ClickListener clickListener) {
         this.context = context;
         this.listData = listData;
         mClickListener = clickListener;
@@ -32,30 +34,20 @@ public class ChatOverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_chat_overview, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_user, parent, false);
         return new ChatOverviewViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ChatOverviewViewHolder) {
-            UserChatOverview data = listData.get(position);
-            ((ChatOverviewViewHolder) holder).tvName.setText(data.getName());
-            ((ChatOverviewViewHolder) holder).tvMessage.setText(data.getMessage());
-            ((ChatOverviewViewHolder) holder).tvTimestamp.setText(data.getTimestamp());
-            if (data.getUrlAva() != null) {
-                Glide.with(context)
-                        .load(data.getUrlAva()) // image url
-                        .placeholder(R.drawable.img) // any placeholder to load at start
-                        .error(R.drawable.img)  // any image in case of error
-                        .override(200, 200) // resizing
-                        .centerCrop()
-                        .into(((ChatOverviewViewHolder) holder).ivAva);  // imageview object
-            }
+            GroupDto data = listData.get(position);
+            ((ChatOverviewViewHolder) holder).tvName.setText(data.getgName());
+            ((ChatOverviewViewHolder) holder).ivAdd.setVisibility(View.GONE);
             ((ChatOverviewViewHolder) holder).clContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mClickListener.onItemClick(data.getId());
+                    mClickListener.onItemClick(data.getgId());
                 }
             });
         }
@@ -67,7 +59,7 @@ public class ChatOverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public void updateData(ArrayList<UserChatOverview> listData) {
+    public void updateData(ArrayList<GroupDto> listData) {
         this.listData.clear();
         this.listData.addAll(listData);
         this.notifyDataSetChanged();
@@ -75,18 +67,14 @@ public class ChatOverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     static class ChatOverviewViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName;
-        public TextView tvMessage;
-        public TextView tvTimestamp;
-        public CircularImageView ivAva;
         public ConstraintLayout clContainer;
+        public ImageView ivAdd;
 
         public ChatOverviewViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.item_chat_overview_tv_name);
-            tvMessage = itemView.findViewById(R.id.item_chat_overview_tv_detail);
-            tvTimestamp = itemView.findViewById(R.id.item_chat_overview_tv_time);
-            ivAva = itemView.findViewById(R.id.item_chat_overview_iv_ava);
-            clContainer = itemView.findViewById(R.id.item_chat_overview_container);
+            tvName = itemView.findViewById(R.id.nam_tv);
+            clContainer = itemView.findViewById(R.id.item_group_overview_container);
+            ivAdd = itemView.findViewById(R.id.add_user_btn);
         }
     }
 

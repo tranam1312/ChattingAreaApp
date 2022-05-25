@@ -136,9 +136,6 @@ public class SignUpScreen extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(SignUpScreen.this, "Authentication ok.",
-                                Toast.LENGTH_SHORT).show();
-
                         final Intent data = new Intent();
                         data.putExtra(EXTRA_DATA_EMAIL, edtEmail.getText().toString());
                         data.putExtra(EXTRA_DATA_PASSWORD, edtPassword.getText().toString());

@@ -1,6 +1,7 @@
 package com.example.chattingarea.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +91,11 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         public void bind(MessageDetailDto messageDetailDto, int position, Context context) {
+            if (TextUtils.isEmpty(messageDetailDto.getContent())) {
+                itemView.setVisibility(View.GONE);
+            } else {
+                itemView.setVisibility(View.VISIBLE);
+            }
             Glide.with(context)
                     .load(messageDetailDto.getuAva()) // image url
                     .placeholder(R.drawable.img) // any placeholder to load at start
@@ -131,6 +137,11 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         public void bind(MessageDetailDto messageDetailDto, int position, Context context) {
+            if (TextUtils.isEmpty(messageDetailDto.getContent())) {
+                itemView.setVisibility(View.GONE);
+            } else {
+                itemView.setVisibility(View.VISIBLE);
+            }
             if (messageDetailDto.isStringType()) {
                 tvMess.setVisibility(View.VISIBLE);
                 ivPick.setVisibility(View.GONE);
