@@ -3,6 +3,7 @@ package com.example.chattingarea.ui;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
@@ -14,24 +15,33 @@ import android.widget.EditText;
 
 import com.example.chattingarea.Constant;
 import com.example.chattingarea.R;
+import com.example.chattingarea.adapter.FriendChatAdapter;
+import com.example.chattingarea.model.MessageDetailDto;
+import com.example.chattingarea.model.UserDto;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+
 public class ChatDetailScreen extends Fragment {
 
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mUserRef;
+    private DatabaseReference mMessRef;
+    private DatabaseReference mRoomRef;
     private FirebaseAuth mFirebaseAuth;
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
 
     private View mRootView;
     private RecyclerView mRcv;
     private EditText mEdtChat;
     private Button mBtnSend;
+
+    FriendChatAdapter friendChatAdapter;
+
+    UserDto currentUser;
+    private ArrayList<MessageDetailDto> listData;
 
     public ChatDetailScreen() {
     }
@@ -60,14 +70,17 @@ public class ChatDetailScreen extends Fragment {
 
     private void initView() {
         mDatabase = FirebaseDatabase.getInstance();
-        mUserRef = mDatabase.getReference(Constant.MESSAGE_REF);
+        mMessRef = mDatabase.getReference(Constant.MESSAGE_REF);
+        mRoomRef = mDatabase.getReference(Constant.ROOM_REF);
         mFirebaseAuth = FirebaseAuth.getInstance();
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
 
         mRcv = mRootView.findViewById(R.id.chat_detail_rcv);
         mEdtChat = mRootView.findViewById(R.id.chat_detail_edt_chat_box);
         mBtnSend = mRootView.findViewById(R.id.chat_detail_btn_send);
+
+        friendChatAdapter = new FriendChatAdapter(getContext(), listData, currentUser);
+        mRcv.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRcv.setAdapter(friendChatAdapter);
     }
 
     private void initAction() {
@@ -85,6 +98,7 @@ public class ChatDetailScreen extends Fragment {
     }
 
     private void getHistoryMess() {
+        mRoomRef.child(mFirebaseAuth.getUid()).
 
     }
 

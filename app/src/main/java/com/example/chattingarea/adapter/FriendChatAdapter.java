@@ -32,6 +32,12 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.mUserDto = userDto;
     }
 
+    public void updateListData(ArrayList<MessageDetailDto> listData, UserDto userDto) {
+        this.listData.clear();
+        this.listData = listData;
+        this.mUserDto = userDto;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
