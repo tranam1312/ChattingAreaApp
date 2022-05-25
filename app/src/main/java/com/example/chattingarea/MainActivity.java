@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.chattingarea.model.UserDto;
+import com.example.chattingarea.ui.ChatGruopFragment;
 import com.example.chattingarea.ui.ChatOverviewScreen;
 import com.example.chattingarea.ui.HomeScreen;
 import com.example.chattingarea.ui.LoginScreen;
@@ -108,5 +109,12 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signOut();
         Intent intent = new Intent(this, LoginScreen.class);
         startActivity(intent);
+    }
+    public void openChatGroup(){
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.home_container, ChatGruopFragment.class, null)
+                .addToBackStack(ChatGruopFragment.class.getSimpleName())
+                .commitAllowingStateLoss();
     }
 }
