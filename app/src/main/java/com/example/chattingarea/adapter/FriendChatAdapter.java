@@ -62,7 +62,7 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return listData.size();
+        return listData == null ? 0 : listData.size();
     }
 
     @Override
@@ -86,14 +86,14 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         public void bind(MessageDetailDto messageDetailDto, int position, Context context) {
-            Glide.with(context)
-                    .load(messageDetailDto.getUrlAva()) // image url
-                    .placeholder(R.drawable.img) // any placeholder to load at start
-                    .error(R.drawable.img)  // any image in case of error
-                    .override(200, 200) // resizing
-                    .centerCrop()
-                    .into(ciAva);
-            tvName.setText(messageDetailDto.getSenderName());
+//            Glide.with(context)
+//                    .load(messageDetailDto.getUrlAva()) // image url
+//                    .placeholder(R.drawable.img) // any placeholder to load at start
+//                    .error(R.drawable.img)  // any image in case of error
+//                    .override(200, 200) // resizing
+//                    .centerCrop()
+//                    .into(ciAva);
+//            tvName.setText(messageDetailDto.getSenderName());
             tvMess.setText(messageDetailDto.getContent());
             tvTimestamp.setText(messageDetailDto.getTimestamp());
         }

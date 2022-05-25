@@ -183,7 +183,7 @@ public class ChatOverviewScreen extends Fragment implements ChatOverviewAdapter.
         ArrayList<UserChatOverview> result = new ArrayList<>();
         UserChatOverview uc = new UserChatOverview();
         for (UserDto u : al) {
-            if (!u.equals(mFirebaseAuth.getUid())) {
+            if (!u.getId().equals(mFirebaseAuth.getUid())) {
                 uc = new UserChatOverview();
                 uc.setId(u.getId());
                 uc.setName(u.getName());
@@ -198,8 +198,11 @@ public class ChatOverviewScreen extends Fragment implements ChatOverviewAdapter.
 
     @Override
     public void onItemClick(String id) {
-        // open chat
-        Log.d("tientm", "chat");
+        ChatDetailScreen cs = new ChatDetailScreen();
+        Bundle bundle = new Bundle();
+        bundle.putString("param1", id);
+        cs.setArguments(bundle);
+        getFragmentManager().beginTransaction().add(R.id.home_container, cs).commitAllowingStateLoss();
     }
 
     public interface DataFirebaseInterface {

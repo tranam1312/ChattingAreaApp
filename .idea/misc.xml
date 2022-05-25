@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Github/Chat-master/Chat-master/app/src/main/res/layout/item_chat_left.xml" value="0.3546875" />
         <entry key="..\:/Github/Chat-master/Chat-master/app/src/main/res/layout/item_chat_right.xml" value="0.3546875" />
+        <entry key="app/src/main/res/layout/fragment_chat_detail_screen.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_chat_overview_screen.xml" value="0.25" />
       </map>
     </option>
   </component>

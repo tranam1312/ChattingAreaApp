@@ -15,6 +15,7 @@
         android:background="@drawable/header_chat_border"
         android:minHeight="120dp"
         android:paddingVertical="24dp"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
