@@ -1,5 +1,10 @@
 package com.example.chattingarea.ui;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -9,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.chattingarea.Constant;
 import com.example.chattingarea.R;
@@ -29,7 +36,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,18 +49,23 @@ import java.util.Date;
 public class ChatDetailScreen extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
+    private static final int OPEN_DOCUMENT_CODE = 22;
     private String uIdOther;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mMessRef;
     private DatabaseReference mUserRef;
     private DatabaseReference mRoomRef;
     private FirebaseAuth mFirebaseAuth;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     private View mRootView;
     private RecyclerView mRcv;
     private EditText mEdtChat;
     private ImageView mBtnSend;
+    private ImageView mBtnPick;
     private AppCompatImageView back;
+    private TextView tvHeaderName;
 
     private FriendChatAdapter friendChatAdapter;
     private UserDto currentUser;
@@ -89,11 +105,15 @@ public class ChatDetailScreen extends Fragment {
         mRoomRef = mDatabase.getReference(Constant.ROOM_REF);
         mUserRef = mDatabase.getReference(Constant.USER_REF);
         mFirebaseAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         mRcv = mRootView.findViewById(R.id.chat_detail_rcv);
         mEdtChat = mRootView.findViewById(R.id.chat_detail_edt_chat_box);
         mBtnSend = mRootView.findViewById(R.id.chat_detail_btn_send);
+        mBtnPick = mRootView.findViewById(R.id.chat_detail_btn_pick);
         back = mRootView.findViewById(R.id.back);
+        tvHeaderName = mRootView.findViewById(R.id.chat_detail_tv_title);
 
         friendChatAdapter = new FriendChatAdapter(getContext(), new ArrayList<>(), currentUser);
         mRcv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -102,7 +122,6 @@ public class ChatDetailScreen extends Fragment {
 
     private void initAction() {
         back.setOnClickListener(view -> requireActivity().onBackPressed());
-        
         mBtnSend.setOnClickListener(view -> {
             String mess = mEdtChat.getText().toString();
             if (TextUtils.isEmpty(mess)) {
@@ -112,21 +131,48 @@ public class ChatDetailScreen extends Fragment {
                 mEdtChat.setText("");
             }
         });
+        mBtnPick.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+            startActivityForResult(intent, OPEN_DOCUMENT_CODE);
+        });
     }
 
-    private void getCurrentUserData() {
-        mUserRef.child(mFirebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                UserDto value = dataSnapshot.getValue(UserDto.class);
-                currentUser = value;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        if (requestCode == OPEN_DOCUMENT_CODE && resultCode == RESULT_OK) {
+            if (resultData != null) {
+                Uri imageUri = resultData.getData();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                uploadFile(bitmap);
             }
+        }
+    }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.w("ProfileScreen", "Failed to read value.", error.toException());
-            }
-        });
+    public void uploadFile(Bitmap bitmap) {
+        if (bitmap != null) {
+            StorageReference imgRef = storageReference.child(Constant.ROOM_REF).child(Utils.generateString());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+            imgRef.putBytes(data).addOnSuccessListener(snapshot -> {
+                snapshot.getStorage().getDownloadUrl().addOnCompleteListener(
+                        task -> {
+                            if (task.isSuccessful()) {
+                                addChatImg(task.getResult().toString());
+                            }
+                        });
+                Log.d("addChatImg", "upload img success!");
+            }).addOnFailureListener(exception -> {
+                Log.d("addChatImg", "upload img Fail!");
+            });
+        }
     }
 
     private void addChat(String mess) {
@@ -139,8 +185,19 @@ public class ChatDetailScreen extends Fragment {
         mRoomRef.child(uIdOther).child(currentUser.getId()).child(Utils.generateString()).setValue(messDto);
     }
 
+    private void addChatImg(String urlAva) {
+        String key = Utils.generateString();
+        MessageDetailDto messDto = new MessageDetailDto(
+                key, urlAva, new Date(), false, currentUser.getId(), currentUser.getName(), currentUser.getUrlAva()
+        );
+
+        mRoomRef.child(currentUser.getId()).child(uIdOther).child(Utils.generateString()).setValue(messDto);
+        mRoomRef.child(uIdOther).child(currentUser.getId()).child(Utils.generateString()).setValue(messDto);
+    }
+
     private void initData() {
         getCurrentUserData();
+        setNameOtherUser();
         getHistoryMess();
     }
 
@@ -165,10 +222,39 @@ public class ChatDetailScreen extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.d("getHistoryMess", "Fail ");
-
             }
         });
+    }
 
+
+    private void getCurrentUserData() {
+        mUserRef.child(mFirebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserDto value = dataSnapshot.getValue(UserDto.class);
+                currentUser = value;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w("ProfileScreen", "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    private void setNameOtherUser() {
+        mUserRef.child(uIdOther).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserDto value = dataSnapshot.getValue(UserDto.class);
+                tvHeaderName.setText(value.getName());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w("ProfileScreen", "Failed to read value.", error.toException());
+            }
+        });
     }
 
 }

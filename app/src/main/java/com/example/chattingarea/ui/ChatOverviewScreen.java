@@ -2,6 +2,7 @@ package com.example.chattingarea.ui;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +38,7 @@ public class ChatOverviewScreen extends Fragment implements ChatOverviewAdapter.
     private View mRootView;
     private RecyclerView mRcv;
     private EditText mEdtSearch;
+    private AppCompatImageView back;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mUserRef;
@@ -81,6 +83,7 @@ public class ChatOverviewScreen extends Fragment implements ChatOverviewAdapter.
     private void initView() {
         mRcv = mRootView.findViewById(R.id.chat_overview_rcv);
         mEdtSearch = mRootView.findViewById(R.id.chat_overview_edt_search);
+        back = mRootView.findViewById(R.id.back);
 
         mDatabase = FirebaseDatabase.getInstance();
         mUserRef = mDatabase.getReference(Constant.USER_REF);
@@ -104,6 +107,7 @@ public class ChatOverviewScreen extends Fragment implements ChatOverviewAdapter.
     }
 
     private void initAction() {
+        back.setOnClickListener(view -> requireActivity().onBackPressed());
         mEdtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -122,7 +126,6 @@ public class ChatOverviewScreen extends Fragment implements ChatOverviewAdapter.
     }
 
     private void searchFriend(String text) {
-
     }
 
     private void initData() {

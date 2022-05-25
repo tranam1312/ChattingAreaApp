@@ -10,10 +10,10 @@
 
     <ImageView
         android:id="@+id/sign_up_iv_ava"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:layout_marginTop="30dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/img_ava"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
