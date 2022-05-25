@@ -40,6 +40,7 @@
             android:id="@+id/ll_current_message_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:orientation="vertical">
 
             <ImageView
@@ -47,8 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@drawable/iv_border"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:src="@mipmap/ic_launcher"
                 android:visibility="gone" />
 
