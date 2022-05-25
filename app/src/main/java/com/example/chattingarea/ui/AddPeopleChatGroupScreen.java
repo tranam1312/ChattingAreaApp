@@ -12,10 +12,10 @@ import com.example.chattingarea.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ChatGroupScreen#newInstance} factory method to
+ * Use the {@link AddPeopleChatGruopScreen#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatGroupScreen extends Fragment {
+public class AddPeopleChatGruopScreen extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class ChatGroupScreen extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ChatGroupScreen() {
+    public AddPeopleChatGruopScreen() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class ChatGroupScreen extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ChatGroupScreen.
+     * @return A new instance of fragment AddPeopleChatGruopScreen.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChatGroupScreen newInstance(String param1, String param2) {
-        ChatGroupScreen fragment = new ChatGroupScreen();
+    public static AddPeopleChatGruopScreen newInstance(String param1, String param2) {
+        AddPeopleChatGruopScreen fragment = new AddPeopleChatGruopScreen();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class ChatGroupScreen extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat_group_screen, container, false);
+        return inflater.inflate(R.layout.dd_people_chat_gruop_screen, container, false);
     }
 }
