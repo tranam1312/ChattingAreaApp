@@ -109,7 +109,6 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         .load(messageDetailDto.getContent()) // image url
                         .placeholder(R.drawable.img) // any placeholder to load at start
                         .error(R.drawable.img)  // any image in case of error
-                        .centerCrop()
                         .into(ivPick);
             }
 
@@ -143,7 +142,6 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         .load(messageDetailDto.getContent()) // image url
                         .placeholder(R.drawable.img) // any placeholder to load at start
                         .error(R.drawable.img)  // any image in case of error
-                        .centerCrop()
                         .into(ivPick);
             }
 
