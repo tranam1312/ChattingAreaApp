@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "478157149652",
+    "project_id": "chattingarea-9e5cb",
+    "storage_bucket": "chattingarea-9e5cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478157149652:android:11eff5695ce4957583f241",
+        "android_client_info": {
+          "package_name": "com.example.chattingarea"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "478157149652-op105r71hrjt5v1armkn089610u6cr0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chattingarea",
+            "certificate_hash": "327ba32bf814936f096f68261993a60925b93633"
+          }
+        },
+        {
+          "client_id": "478157149652-qvgcrclpd5dvfec1fqe65u0m4tvj168i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtv3AKOM9G-z2Ug3V58ZQ74L0tnyOnfsk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "478157149652-qvgcrclpd5dvfec1fqe65u0m4tvj168i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
