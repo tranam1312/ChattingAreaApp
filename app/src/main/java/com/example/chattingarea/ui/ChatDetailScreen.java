@@ -1,5 +1,6 @@
 package com.example.chattingarea.ui;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -22,19 +22,17 @@ import com.example.chattingarea.Utils;
 import com.example.chattingarea.adapter.FriendChatAdapter;
 import com.example.chattingarea.model.MessageDetailDto;
 import com.example.chattingarea.model.UserDto;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class ChatDetailScreen extends Fragment {
 
@@ -51,10 +49,8 @@ public class ChatDetailScreen extends Fragment {
     private EditText mEdtChat;
     private ImageView mBtnSend;
 
-    FriendChatAdapter friendChatAdapter;
-
-    UserDto currentUser;
-    private ArrayList<MessageDetailDto> listData;
+    private FriendChatAdapter friendChatAdapter;
+    private UserDto currentUser;
 
     public ChatDetailScreen() {
     }
@@ -73,7 +69,6 @@ public class ChatDetailScreen extends Fragment {
         if (getArguments() != null) {
             uIdOther = getArguments().getString(ARG_PARAM1);
         }
-        Log.d("tientm", uIdOther);
     }
 
     @Override
@@ -97,7 +92,7 @@ public class ChatDetailScreen extends Fragment {
         mEdtChat = mRootView.findViewById(R.id.chat_detail_edt_chat_box);
         mBtnSend = mRootView.findViewById(R.id.chat_detail_btn_send);
 
-        friendChatAdapter = new FriendChatAdapter(getContext(), listData, currentUser);
+        friendChatAdapter = new FriendChatAdapter(getContext(), new ArrayList<>(), currentUser);
         mRcv.setLayoutManager(new LinearLayoutManager(getContext()));
         mRcv.setAdapter(friendChatAdapter);
     }
@@ -109,8 +104,8 @@ public class ChatDetailScreen extends Fragment {
                 return;
             } else {
                 addChat(mEdtChat.getText().toString());
+                mEdtChat.setText("");
             }
-
         });
     }
 
@@ -132,22 +127,11 @@ public class ChatDetailScreen extends Fragment {
     private void addChat(String mess) {
         String key = Utils.generateString();
         MessageDetailDto messDto = new MessageDetailDto(
-                key, mess, "date", true, currentUser.getId()
+                key, mess, new Date(), true, currentUser.getId(), currentUser.getName(), currentUser.getUrlAva()
         );
-        mMessRef.child(key).setValue(messDto).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.d("tientm", "addChat oke");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("tientm", "addChat fail");
-            }
-        });
 
-        mRoomRef.child(currentUser.getId()).child(uIdOther).child(Utils.generateString()).setValue(key);
-        mRoomRef.child(uIdOther).child(currentUser.getId()).child(Utils.generateString()).setValue(key);
+        mRoomRef.child(currentUser.getId()).child(uIdOther).child(Utils.generateString()).setValue(messDto);
+        mRoomRef.child(uIdOther).child(currentUser.getId()).child(Utils.generateString()).setValue(messDto);
     }
 
     private void initData() {
@@ -159,12 +143,23 @@ public class ChatDetailScreen extends Fragment {
         mRoomRef.child(mFirebaseAuth.getUid()).child(uIdOther).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("tientm", "ok: " + snapshot);
+                Log.d("getHistoryMess", "ok: " + snapshot);
+                ArrayList<MessageDetailDto> list = new ArrayList<>();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    MessageDetailDto mess = ds.getValue(MessageDetailDto.class);
+                    list.add(mess);
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    Collections.sort(list, Comparator.comparing(MessageDetailDto::getTimestamp));
+                }
+                // update adapter
+                friendChatAdapter.updateListData(list, currentUser);
+                mRcv.scrollToPosition(list.size() - 1);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("tientm", "Fail ");
+                Log.d("getHistoryMess", "Fail ");
 
             }
         });

@@ -1,12 +1,16 @@
 package com.example.chattingarea.model;
 
+import java.util.Date;
+
 public class MessageDetailDto {
     private String messageId;
     private String content;
-    private String timestamp;
+    private Date timestamp;
     private boolean isStringType;
 
-    private String senderId;
+    private String uId;
+    private String uName;
+    private String uAva;
 
     public String getMessageId() {
         return messageId;
@@ -24,11 +28,11 @@ public class MessageDetailDto {
         this.content = content;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -40,22 +44,40 @@ public class MessageDetailDto {
         isStringType = stringType;
     }
 
-    public String getSenderId() {
-        return senderId;
+    public String getuId() {
+        return uId;
     }
 
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
+    public String getuName() {
+        return uName;
+    }
+
+    public void setuName(String uName) {
+        this.uName = uName;
+    }
+
+    public String getuAva() {
+        return uAva;
+    }
+
+    public void setuAva(String uAva) {
+        this.uAva = uAva;
     }
 
     public MessageDetailDto() {
     }
 
-    public MessageDetailDto(String messageId, String content, String timestamp, boolean isStringType, String senderId) {
+    public MessageDetailDto(String messageId, String content, Date timestamp, boolean isStringType, String uId, String uName, String uAva) {
         this.messageId = messageId;
         this.content = content;
         this.timestamp = timestamp;
         this.isStringType = isStringType;
-        this.senderId = senderId;
+        this.uId = uId;
+        this.uName = uName;
+        this.uAva = uAva;
     }
 }

@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:background="@color/teal_200"
+        android:background="@color/primary_orange_light"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:nestedScrollingEnabled="false"
@@ -45,7 +45,7 @@
         android:paddingBottom="40dp"
         app:layout_constraintBottom_toTopOf="@+id/chat_detail_chat_box_container"
         app:layout_constraintTop_toBottomOf="@+id/chat_detail_header_wrapper"
-        tools:listitem="@layout/item_chat_left" />
+        tools:listitem="@layout/item_chat_right" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chat_detail_chat_box_container"

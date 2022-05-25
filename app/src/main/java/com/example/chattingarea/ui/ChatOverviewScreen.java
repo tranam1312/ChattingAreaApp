@@ -202,7 +202,10 @@ public class ChatOverviewScreen extends Fragment implements ChatOverviewAdapter.
         Bundle bundle = new Bundle();
         bundle.putString("param1", id);
         cs.setArguments(bundle);
-        getFragmentManager().beginTransaction().add(R.id.home_container, cs).commitAllowingStateLoss();
+        getFragmentManager().beginTransaction()
+                .addToBackStack(ChatDetailScreen.class.getSimpleName())
+                .add(R.id.home_container, cs)
+                .commitAllowingStateLoss();
     }
 
     public interface DataFirebaseInterface {

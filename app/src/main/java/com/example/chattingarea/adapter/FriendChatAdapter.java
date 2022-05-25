@@ -15,6 +15,7 @@ import com.example.chattingarea.model.MessageDetailDto;
 import com.example.chattingarea.model.UserDto;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -33,9 +34,9 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public void updateListData(ArrayList<MessageDetailDto> listData, UserDto userDto) {
-        this.listData.clear();
         this.listData = listData;
         this.mUserDto = userDto;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -67,7 +68,7 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemViewType(int position) {
-        return listData.get(position).getSenderId().equals(mUserDto.getId()) ? TYPE_CHAT_RIGHT : TYPE_CHAT_LEFT;
+        return listData.get(position).getuId().equals(mUserDto.getId()) ? TYPE_CHAT_RIGHT : TYPE_CHAT_LEFT;
     }
 
     static class ItemMessageLeftHolder extends RecyclerView.ViewHolder {
@@ -81,21 +82,24 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(itemView);
             ciAva = itemView.findViewById(R.id.item_left_ava);
             tvName = itemView.findViewById(R.id.item_left_name);
-            tvMess = itemView.findViewById(R.id.item_left_message);
+            tvMess = itemView.findViewById(R.id.item_left_tv_message);
             tvTimestamp = itemView.findViewById(R.id.item_left_tv_timestamp);
         }
 
         public void bind(MessageDetailDto messageDetailDto, int position, Context context) {
-//            Glide.with(context)
-//                    .load(messageDetailDto.getUrlAva()) // image url
-//                    .placeholder(R.drawable.img) // any placeholder to load at start
-//                    .error(R.drawable.img)  // any image in case of error
-//                    .override(200, 200) // resizing
-//                    .centerCrop()
-//                    .into(ciAva);
-//            tvName.setText(messageDetailDto.getSenderName());
+            Glide.with(context)
+                    .load(messageDetailDto.getuAva()) // image url
+                    .placeholder(R.drawable.img) // any placeholder to load at start
+                    .error(R.drawable.img)  // any image in case of error
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(ciAva);
+            tvName.setText(messageDetailDto.getuName());
             tvMess.setText(messageDetailDto.getContent());
-            tvTimestamp.setText(messageDetailDto.getTimestamp());
+
+            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("hh:mm:ss a");
+            String dateStr = DATE_FORMAT.format(messageDetailDto.getTimestamp());
+            tvTimestamp.setText(dateStr);
         }
     }
 
@@ -111,7 +115,9 @@ public class FriendChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         public void bind(MessageDetailDto messageDetailDto, int position) {
             tvMess.setText(messageDetailDto.getContent());
-            tvTimestamp.setText(messageDetailDto.getTimestamp());
+            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("hh:mm:ss a");
+            String dateStr = DATE_FORMAT.format(messageDetailDto.getTimestamp());
+            tvTimestamp.setText(dateStr);
         }
     }
 }
